@@ -23,7 +23,7 @@ var temporaryName = `akram ${counter}`;
 var image = `https://bootdey.com/img/Content/avatar/avatar${counter}.png`;
 
 app.get("/chat", (req, res) => {
-    res.render("old/chat");
+    res.render("chat");
 });
 
 io.on("connection", async (socket) => {
