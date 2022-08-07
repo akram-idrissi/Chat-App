@@ -40,3 +40,22 @@
 ::-webkit-scrollbar-corner {
     background: transparent;
 }
+
+.badge {
+    line-height: 1;
+    font-size: 75%;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    display: inline-block;
+    border-radius: 0.25rem;
+    vertical-align: baseline;
+    color: rgb(167, 168, 168);
+    background-color: rgb(36, 36, 36);
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.badge-pad {
+    padding: 0.25em 0.4em;
+}
