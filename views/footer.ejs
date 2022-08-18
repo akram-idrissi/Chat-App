@@ -4,6 +4,24 @@
 <script src="utils.js"></script>
 <script src="35f7402a75.js"></script>
 <script src="script.js"></script>
+
+<script>
+    function showHide() {
+        document.getElementById("left-section").classList.toggle("w-screen");
+    }
+
+    document.getElementById("arrow-left").addEventListener("click", () => {
+        document.getElementById("close").classList.toggle("block");
+        showHide();
+    });
+
+    document.getElementById("close").addEventListener("click", () => {
+        showHide();
+        document.getElementById("arrow-left").classList.toggle("block");
+
+    });
+</script>
+
 </body>
 
 </html>

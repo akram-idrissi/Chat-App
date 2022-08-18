@@ -31,29 +31,48 @@ function addToOnlineUsers(user) {
 
 function displayReceiver(element) {
     $("#msg-container").html("");
+    $("#topbar-user").html("");
     let receiverID = $(element).attr("data-socket");
+    $("#topbar-user").attr("data-ref", receiverID);
     $(element).find(`.notification`).html("");
     $(element).find(`.notification`).attr("class", "notification badge");
-    $("#topbar-user").attr("data-ref", receiverID);
-    $("#topbar-img").attr("src", $(element).find("#leftbar-img").attr("src"));
-    $("#topbar-username").html($(element).find("#leftbar-username").html());
+    let image = $(element).find("#leftbar-img").attr("src");
+    let username = $(element).find("#leftbar-username").html();
+    $("#input").attr(
+        "placeholder",
+        `Message with ${$(element).find("#leftbar-username").html()}`
+    );
 
+    let child = `
+        <div class="flex items-center">
+            <div class="w-10 h-10 mr-4 relative flex flex-shrink-0">
+                <img id="topbar-img" class="rounded-lg w-full h-full object-cover"
+                    src="${image}" alt="" />
+            </div>
+            <div class="text-sm">
+                <p id="topbar-username" class="font-bold">${username}</p>
+            </div>
+        </div>
+    `;
+
+    $("#topbar-user").append(child);
     socket.emit("load-msgs", receiverID);
 }
 
 socket.on("private-msgs", (messages, socketID) => {
-    let receiverID = $("#topbar-user").attr("data-ref");
-    if (messages == "null") return;
-    for (let i = 0; i < messages.length; i++) {
-        let message = messages[i];
-        if (message.sender.socketID == receiverID) {
-            displayMessage(message, false);
-            continue;
-        } else if (message.sender.socketID == socketID) {
-            displayMessage(message);
-            continue;
+    try {
+        let receiverID = $("#topbar-user").attr("data-ref");
+        for (let i = 0; i < messages.length; i++) {
+            let message = messages[i];
+            if (message.sender.socketID == receiverID) {
+                displayMessage(message, false);
+                continue;
+            } else if (message.sender.socketID == socketID) {
+                displayMessage(message);
+                continue;
+            }
         }
-    }
+    } catch (error) {}
 });
 
 function displayMessage(message, self = true) {
@@ -122,8 +141,3 @@ function displayMessage(message, self = true) {
 
     $("#msg-container").append(child);
 }
-/* 
-<svg class="flex-shrink-0 fill-current w-5 h-3" viewBox="0 0 20 12">
-    <path d="M10.402 6.988l1.586 1.586L18.28 2.28a1 1 0 011.414 1.414l-7 7a1 1 0 01-1.414 0L8.988 8.402l-2.293 2.293a1 1 0 01-1.414 0l-3-3A1 1 0 013.695 6.28l2.293 2.293L12.28 2.28a1 1 0 011.414 1.414l-3.293 3.293z"></path>
-</svg>;
- */

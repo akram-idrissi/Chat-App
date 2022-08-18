@@ -10,6 +10,7 @@ socket.on("usersList", (connectedUsers) => {
 
 // send a private message
 $("#form").submit((event) => {
+    console.log("input");
     event.preventDefault();
 
     let input = $("#input");

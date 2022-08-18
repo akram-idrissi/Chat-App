@@ -10,7 +10,7 @@ const server = createServer(app);
 const io = new Server(server);
 
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "views/chat"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
 app.use(express.static("public/js"));
