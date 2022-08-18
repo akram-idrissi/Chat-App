@@ -30,6 +30,7 @@ function addToOnlineUsers(user) {
 }
 
 function displayReceiver(element) {
+    
     $("#msg-container").html("");
     $("#topbar-user").html("");
     let receiverID = $(element).attr("data-socket");
