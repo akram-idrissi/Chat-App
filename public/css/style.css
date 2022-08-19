@@ -2,9 +2,12 @@
 .group:hover .group-hover\:block {
     display: block;
 }
-/* .hover\:w-64:hover {
+
+/* 
+.hover\:w-64:hover {
     width: 45%;
-} */
+} 
+*/
 
 /* NO NEED THIS CSS - just for custom scrollbar which can also be configured in tailwind.config.js*/
 ::-webkit-scrollbar {
@@ -15,28 +18,62 @@
     width: 0px;
     height: 0px;
 }
+
+/* thumb */
 ::-webkit-scrollbar-thumb {
-    background: #161819;
-    border: 0px none #ffffff;
+    background: #777;
     border-radius: 50px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-    background: #161819;
+    width: 20px;
 }
-::-webkit-scrollbar-thumb:active {
-    background: #161819;
-}
+
+/* truck */
 ::-webkit-scrollbar-track {
     background: #161819;
     border: 0px none #ffffff;
     border-radius: 50px;
 }
+
 ::-webkit-scrollbar-track:hover {
-    background: #666666;
+    background: #161819;
+    border: 0px none #ffffff;
+    border-radius: 50px;
 }
-::-webkit-scrollbar-track:active {
-    background: #333333;
-}
+
 ::-webkit-scrollbar-corner {
     background: transparent;
+}
+
+.badge {
+    line-height: 1;
+    font-size: 75%;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    display: inline-block;
+    border-radius: 0.25rem;
+    vertical-align: baseline;
+    color: rgb(167, 168, 168);
+    background-color: rgb(36, 36, 36);
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.badge-pad {
+    padding: 0.25em 0.4em;
+}
+
+#add-group > svg {
+    color: rgb(102, 102, 102);
+}
+
+#add-group:hover {
+    background-color: rgba(102, 102, 102, 0.2);
+}
+
+#attachements {
+    color: rgb(102, 102, 102);
+    background-color: rgba(102, 102, 102, 0.2);
 }

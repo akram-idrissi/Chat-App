@@ -2,22 +2,15 @@ var socket = io();
 
 // display list of connected users
 socket.on("usersList", (connectedUsers) => {
-    $("#active-users").html(" ");
+    $("#members").html(" ");
     for (let i = 0; i < connectedUsers.length; i++) {
         addToOnlineUsers(connectedUsers[i]);
     }
 });
 
-socket.on("usersList-self", (connectedUsers, socketID) => {
-    console.log(`self ${connectedUsers} and ${socketID}`);
-    $("#active-users").html(" ");
-    for (let i = 0; i < connectedUsers.length; i++) {
-        addToOnlineUsers(connectedUsers[i], socketID);
-    }
-});
-
 // send a private message
 $("#form").submit((event) => {
+    console.log("input");
     event.preventDefault();
 
     let input = $("#input");
@@ -40,6 +33,7 @@ socket.on("server-msg", (message) => {
 
     if (!attribute || attribute != message.sender.socketID) {
         if (notification) {
+            notification.attr("class", "notification badge badge-pad");
             notificationValue = notification.html();
             if (!notificationValue) {
                 notification.html(1);
