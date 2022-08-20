@@ -1,15 +1,27 @@
 const path = require("path");
+const dotenv = require("dotenv");
 const express = require("express");
+const mongoose = require("mongoose");
 const { Server } = require("socket.io");
 const { createServer } = require("http");
 const { addUser } = require("./models/userDB.js");
 const { findMessages, addMessage } = require("./models/messageDB.js");
+const authRouter = require("./auth");
+const cors = require("cors");
 
+dotenv.config();
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
-app.set("view engine", "ejs");
+mongoose.connect(process.env.DATABASE_URL, () =>
+    console.log("connected to db")
+);
+
+app.use(express.json(), cors());
+app.use("/auth", authRouter);
+
+/* app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views/chat"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("public"));
@@ -59,6 +71,6 @@ io.on("connection", async (socket) => {
 function updateData(c) {
     temporaryName = `akram ${c}`;
     image = `https://bootdey.com/img/Content/avatar/avatar${c}.png`;
-}
+} */
 
 server.listen(5000);

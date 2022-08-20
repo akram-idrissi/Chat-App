@@ -1,4 +1,4 @@
-class User {
+/* class User {
     constructor(socketID, name, image) {
         this.socketID = socketID;
         this.name = name;
@@ -7,23 +7,29 @@ class User {
 }
 
 module.exports = { User };
+ */
 
-/* const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    socketID: {
-        type: String,
-        required: true,
-    },
     name: {
         type: String,
+        min: 6,
+        max: 14,
         required: true,
     },
-    image: {
+    email: {
         type: String,
+        min: 6,
+        max: 255,
+        required: true,
+    },
+    password: {
+        type: String,
+        min: 8,
+        max: 64,
         required: true,
     },
 });
 
 module.exports = mongoose.model("User", userSchema);
- */
