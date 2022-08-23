@@ -1,0 +1,57 @@
+<%- include('../header') %>
+    <header>
+        <div class="h-screen bg-second flex flex-col justify-center items-center">
+            <div class="hidden error flex p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+                role="alert">
+                <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor"
+                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                <span class="sr-only">Danger</span>
+                <div>
+                    <span class="font-medium">Ensure that these requirements are met:</span>
+                    <ul class="mt-1.5 ml-4 text-red-700 list-disc list-inside">
+                        <li>Required 30 characters or fewer. Letters, digits and @/./+/-/_ only.</li>
+                        <li>Required Letters (upper and lower), digits and /./-/_ only.</li>
+                        <li>Required 8 characters or more, letters digits and symbols</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="py-6 px-8 w-96 bg-fith rounded shadow-md">
+                <form id="form" method="post">
+                    <div class="mb-4">
+                        <label for="name" class="block text-white font-bold">Name:</label>
+                        <input type="text" name="name" id="name"
+                            class="input w-full border border-gray-300 py-2 pl-3 rounded mt-2 outline-none focus:ring-indigo-600 :ring-indigo-600" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="email" class="block text-white font-bold">Email:</label>
+                        <input type="email" name="email" id="email"
+                            class="input w-full border border-gray-300 py-2 pl-3 rounded mt-2 outline-none focus:ring-indigo-600 :ring-indigo-600" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="block text-white font-bold">Password:</label>
+                        <input type="password" name="password" id="password"
+                            class="input w-full border border-gray-300 py-2 pl-3 rounded mt-2 outline-none focus:ring-indigo-600 :ring-indigo-600" />
+                    </div>
+
+                    <button style="background-color: rgb(59 130 246);"
+                        class="mb-2 mt-6 cursor-pointer py-2 px-4 block mt-4 bg-indigo-500 text-white font-bold w-full text-center rounded">
+                        Sign Up
+                    </button>
+                </form>
+
+                <div class="text-center">
+                    <sapn class="text-xs text-main">Already have an account ? </sapn>
+                    <a href="auth/login" style="color: rgb(59 130 246);" class="text-xs hover:underline inline-block">
+                        Sign In
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+<%- include('../footer') %>
