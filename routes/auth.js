@@ -4,6 +4,7 @@ const token = require("../utils/token");
 const router = require("express").Router();
 const { inputValidator } = require("../utils/validation");
 
+// register end points
 router.get("/register", (req, res) => {
     res.render("register");
 });
@@ -29,6 +30,7 @@ router.post("/register", async (req, res) => {
     res.status(200).send("success");
 });
 
+// login end points
 router.get("/login", (req, res) => {
     res.render("login", { req: req });
 });
@@ -53,9 +55,10 @@ router.post("/login", async (req, res) => {
     token.sendAccessToken(res, token.createAccessToken(user.id));
     token.sendRefreshToken(res, token.createRefreshToken(user.id));
 
-    return res.json({ user: true });
+    return res.json({ name: user.name });
 });
 
+// logout end points
 router.get("/logout", (req, res) => {
     token.deleteTokens(res);
     res.redirect("/auth/login");
@@ -64,14 +67,6 @@ router.get("/logout", (req, res) => {
 router.post("/logout", (req, res) => {
     token.deleteTokens(res);
     res.redirect("/login");
-});
-
-router.get("/data", token.isAuth, (req, res) => {
-    res.render("protected");
-});
-
-router.post("/data", token.isAuth, (req, res) => {
-    res.render("protected");
 });
 
 module.exports = router;

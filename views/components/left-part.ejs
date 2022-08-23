@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <!-- section -->
+        <!-- notif & settings -->
         <div class="mb-5">
             <!-- notifications -->
             <div class="w-11/12 mx-auto">
@@ -98,7 +98,8 @@
                 </button>
 
                 <!-- backdrop -->
-                <div x-show="open" class="fixed flex justify-center items-center left-0 top-0 bottom-0 right-0 z-10">
+                <div x-show="open" x-cloak
+                    class="fixed flex justify-center items-center left-0 top-0 bottom-0 right-0 z-10">
                     <!-- dialog  -->
                     <div @click.outside="open = false">
                         <%- include('dropdowns/add-group')%>

@@ -10,6 +10,16 @@
 */
 
 /* NO NEED THIS CSS - just for custom scrollbar which can also be configured in tailwind.config.js*/
+
+/* firefox scrollbar */
+
+#groups,
+#members,
+#msg-container {
+    scrollbar-width: thin;
+    scrollbar-color: #777 #161819;
+}
+
 ::-webkit-scrollbar {
     width: 2px;
     height: 2px;
@@ -46,6 +56,7 @@
     background: transparent;
 }
 
+/* other customisations */
 .badge {
     line-height: 1;
     font-size: 75%;

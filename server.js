@@ -8,6 +8,7 @@ const { Server } = require("socket.io");
 const { createServer } = require("http");
 const session = require("express-session");
 const authRouter = require("./routes/auth");
+const { isAuth } = require("./utils/token");
 const cookieParser = require("cookie-parser");
 const { addUser } = require("./models/userDB.js");
 const { findMessages, addMessage } = require("./models/messageDB.js");
@@ -23,7 +24,7 @@ mongoose.connect(process.env.DATABASE_URL, () =>
 
 app.use(
     session({
-        secret: "c3e4088a6b80e22cd4dbfcc63ada01bbbeb31b88463ee9c2cbf86eca268aa355e8e0bb80ddcb7d607d06c20965ac5e53b0fa2bdc8d09079c9ce9f28f76c4e9c1",
+        secret: process.env.SESSION_SECRET,
         saveUninitialized: true,
         resave: true,
     })
@@ -54,11 +55,10 @@ app.use(function (req, res, next) {
 });
 
 app.use("/auth", authRouter);
-app.get("/chat", (req, res) => {
+app.get("/chat", isAuth, (req, res) => {
     res.render("chat");
 });
 
-/*
 var counter = 1;
 var usersList = [];
 var temporaryName = `akram ${counter}`;
@@ -101,6 +101,6 @@ io.on("connection", async (socket) => {
 function updateData(c) {
     temporaryName = `akram ${c}`;
     image = `https://bootdey.com/img/Content/avatar/avatar${c}.png`;
-} */
+}
 
 server.listen(5000);

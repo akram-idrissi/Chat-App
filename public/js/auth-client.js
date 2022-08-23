@@ -33,7 +33,10 @@ if (form && form != "undefined") {
                 if (data.error) {
                     reset();
                     $(".error").html(errorMsg);
-                } else window.location = "/chat";
+                } else {
+                    window.localStorage.setItem("name", data.name);
+                    window.location = "/chat";
+                }
             },
             error: function (xhr, status, err) {
                 reset();
