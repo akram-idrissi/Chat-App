@@ -30,6 +30,15 @@ const userSchema = new mongoose.Schema({
         max: 64,
         required: true,
     },
+    image: {
+        type: String,
+        default: "",
+        required: false,
+    },
+    date: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 module.exports = mongoose.model("User", userSchema);

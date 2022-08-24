@@ -1,5 +1,23 @@
 <script src="../jquery-3.6.0.min.js"></script>
 <script src="../auth-client.js"></script>
+
+<script>
+    let username = window.localStorage.getItem("name");
+    if (username !== null) {
+        username = username.charAt(0).toUpperCase() + username.slice(1);
+        $(".welcome").html(`
+            <p x-data="{show:true}" x-init="setTimeout(() => show=false, 6000)" x-show="show" x-transition
+            class="fixed bg-blue-500 text-white py-2 px-4 rounded-xl z-20 bottom-20 right-6 font-bold">
+            Welcome ${username} to our app, log in to Discover the other world!!
+            </p>
+        `);
+        window.localStorage.clear();
+    } else {
+        $(".welcome").html('');
+    }
+</script>
+
+
 </body>
 
 </html>

@@ -141,3 +141,9 @@ function displayMessage(message, self = true) {
 
     $("#msg-container").append(child);
 }
+
+
+
+
+
+

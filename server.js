@@ -1,36 +1,23 @@
 const cors = require("cors");
 const path = require("path");
+const cookie = require("cookie");
 const dotenv = require("dotenv");
 const express = require("express");
 const mongoose = require("mongoose");
-const flash = require("connect-flash");
 const { Server } = require("socket.io");
 const { createServer } = require("http");
-const session = require("express-session");
+const { isAuth } = require("./lib/token");
+const { getUser } = require("./lib/utils");
 const authRouter = require("./routes/auth");
-const { isAuth } = require("./utils/token");
 const cookieParser = require("cookie-parser");
-const { addUser } = require("./models/userDB.js");
-const { findMessages, addMessage } = require("./models/messageDB.js");
 
 dotenv.config();
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
 
 mongoose.connect(process.env.DATABASE_URL, () =>
     console.log("connected to db")
 );
-
-app.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        saveUninitialized: true,
-        resave: true,
-    })
-);
-
-app.use(flash());
 
 app.use(cookieParser());
 app.use(express.json(), cors());
@@ -38,7 +25,6 @@ app.use(express.urlencoded({ extended: false }));
 
 // setting the view engine
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views/components"));
 
 // setting public files
 app.use(express.static("public"));
@@ -46,7 +32,7 @@ app.use(express.static("public/js"));
 app.use(express.static("public/css"));
 app.use(express.static("public/assets"));
 
-// setting views per path
+// rendrering views according to path
 app.use(function (req, res, next) {
     if (req.path.includes("auth"))
         app.set("views", path.join(__dirname, "views/auth"));
@@ -54,6 +40,7 @@ app.use(function (req, res, next) {
     next();
 });
 
+// routes
 app.use("/auth", authRouter);
 app.get("/chat", isAuth, (req, res) => {
     res.render("chat");
@@ -64,12 +51,20 @@ var usersList = [];
 var temporaryName = `akram ${counter}`;
 var image = `https://bootdey.com/img/Content/avatar/avatar${counter}.png`;
 
-app.get("/chat", (req, res) => {
-    res.render("chat");
-});
-
+/* lgoic */
+const io = new Server(server);
 io.on("connection", async (socket) => {
-    // when first entered the app
+    // when user is connected
+    const cookies = cookie.parse(socket.handshake.headers.cookie);
+    const user = getUser(cookies);
+    
+
+
+
+
+
+
+    /* 
     updateData(counter++);
     usersList.push(await addUser(socket.id, temporaryName, image));
     io.emit("usersList", usersList);
@@ -95,7 +90,7 @@ io.on("connection", async (socket) => {
         )[0];
         messages = await findMessages(sender, receiver);
         socket.emit("private-msgs", messages, socket.id);
-    });
+    }); */
 });
 
 function updateData(c) {

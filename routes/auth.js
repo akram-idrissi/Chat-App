@@ -1,8 +1,8 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
-const token = require("../utils/token");
+const token = require("../lib/token");
 const router = require("express").Router();
-const { inputValidator } = require("../utils/validation");
+const { inputValidator } = require("../lib/validation");
 
 // register end points
 router.get("/register", (req, res) => {
@@ -11,28 +11,28 @@ router.get("/register", (req, res) => {
 
 router.post("/register", async (req, res) => {
     const isValid = inputValidator(req, true);
-    if (!isValid) return res.status(400).send("validation error");
+    if (!isValid) return res.json({ error: true, valid: true });
 
     // verifying if email exists
     const emailExist = await User.findOne({ email: req.body.email });
-    if (emailExist) return res.status(400).send("Email already exists");
+    if (emailExist) return res.json({ error: true, email: true });
 
     // hashing password
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-    const user = new User({
+    let user = new User({
         name: req.body.name,
         email: req.body.email,
         password: hashedPassword,
     });
 
-    await user.save();
-    res.status(200).send("success");
+    user = await user.save();
+    return res.json({ name: user.name });
 });
 
 // login end points
 router.get("/login", (req, res) => {
-    res.render("login", { req: req });
+    res.render("login");
 });
 
 router.post("/login", async (req, res) => {
@@ -40,7 +40,7 @@ router.post("/login", async (req, res) => {
     if (!isValid) return res.json({ error: true });
 
     // get user if it exists
-    const user = await User.findOne({ email: req.body.email });
+    let user = await User.findOne({ email: req.body.email });
 
     if (!user) return res.json({ error: true });
 
@@ -52,8 +52,11 @@ router.post("/login", async (req, res) => {
 
     if (!validPassword) return res.json({ error: true });
 
-    token.sendAccessToken(res, token.createAccessToken(user.id));
-    token.sendRefreshToken(res, token.createRefreshToken(user.id));
+    user = user.toObject();
+    delete user.password;
+
+    token.sendAccessToken(res, token.createAccessToken(user));
+    token.sendRefreshToken(res, token.createRefreshToken(user));
 
     return res.json({ name: user.name });
 });
