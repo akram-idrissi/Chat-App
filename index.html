@@ -1,4 +1,26 @@
-<%- include('header') %>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/output.css">
+    <link rel="stylesheet" href="public/css/tailwind.min.css" />
+    <style>
+        [x-cloak] {
+            display: none
+        }
+    </style>
+
+    <!-- alpinejs -->
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <title>Chat</title>
+</head>
+
+<body class="">
+
     <header>
         <div class="h-screen bg-second flex flex-col justify-center items-center">
             <div class="error"></div>
@@ -24,48 +46,31 @@
 
                     <div class="mb-4">
                         <label for="avatar" class="block text-white font-bold">Avatar:</label>
-                        <div class="input avatars w-full rounded mt-2">
-                            <input type="hidden" id="av" value="">
+                        <div class="input w-full rounded mt-2">
                             <ul class="flex items-center justify-between">
                                 <li onclick="getAvatar(this)" class="cursor-pointer w-8 h-8"><img
-                                        class="av rounded-md w-full h-full" src="/avatar1.png" alt="">
-                                    <span class=""></span>
-                                </li>
+                                        class="rounded-md w-full h-full" src="public/assets/avatar1.png" alt=""></li>
 
                                 <li onclick="getAvatar(this)" class="cursor-pointer w-8 h-8"><img
-                                        class="av rounded-md w-full h-full" src="/avatar2.png" alt="">
-                                    <span class=""></span>
-                                </li>
+                                        class="rounded-md w-full h-full" src="public/assets/avatar2.png" alt=""></li>
 
                                 <li onclick="getAvatar(this)" class="cursor-pointer w-8 h-8"><img
-                                        class="av rounded-md w-full h-full" src="/avatar3.png" alt="">
-                                    <span class=""></span>
-                                </li>
+                                        class="rounded-md w-full h-full" src="public/assets/avatar3.png" alt=""></li>
 
                                 <li onclick="getAvatar(this)" class="cursor-pointer w-8 h-8"><img
-                                        class="av rounded-md w-full h-full" src="/avatar4.png" alt="">
-                                    <span class=""></span>
-                                </li>
+                                        class="rounded-md w-full h-full" src="public/assets/avatar4.png" alt=""></li>
 
                                 <li onclick="getAvatar(this)" class="cursor-pointer w-8 h-8"><img
-                                        class="av rounded-md w-full h-full" src="/avatar5.png" alt="">
-                                    <span class=""></span>
-                                </li>
+                                        class="rounded-md w-full h-full" src="public/assets/avatar5.png" alt=""></li>
 
                                 <li onclick="getAvatar(this)" class="cursor-pointer w-8 h-8"><img
-                                        class="av rounded-md w-full h-full" src="/avatar6.png" alt="">
-                                    <span class=""></span>
-                                </li>
+                                        class="rounded-md w-full h-full" src="public/assets/avatar6.png" alt=""></li>
 
                                 <li onclick="getAvatar(this)" class="cursor-pointer w-8 h-8"><img
-                                        class="av rounded-md w-full h-full" src="/avatar7.png" alt="">
-                                    <span class=""></span>
-                                </li>
+                                        class="rounded-md w-full h-full" src="public/assets/avatar7.png" alt=""></li>
 
                                 <li onclick="getAvatar(this)" class="cursor-pointer w-8 h-8"><img
-                                        class="av rounded-md w-full h-full" src="/avatar8.png" alt="">
-                                    <span class=""></span>
-                                </li>
+                                        class="rounded-md w-full h-full" src="public/assets/avatar8.png" alt=""></li>
                             </ul>
                         </div>
                     </div>
@@ -78,11 +83,13 @@
 
                 <div class="text-center">
                     <sapn class="text-xs text-main">Already have an account ? </sapn>
-                    <a href="login" style="color: rgb(59 130 246);" class="text-xs hover:underline inline-block">
+                    <a href="auth/login" style="color: rgb(59 130 246);" class="text-xs hover:underline inline-block">
                         Sign In
                     </a>
                 </div>
             </div>
         </div>
     </header>
-    <%- include('footer') %>
+</body>
+
+</html>

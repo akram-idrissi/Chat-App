@@ -1,40 +1,31 @@
+const getAvatar = (element) => {
+    $("li").children("span").removeClass();
+
+    $(element)
+        .children("span")
+        .addClass("relative -top-2.5 inline-block w-7 h-0.5 bg-blue-500");
+
+    $("#av").val($(element).find(".av").attr("src"));
+};
+
 const reset = () => {
     $("#password").val("");
     $(".input").prop("disabled", false);
 };
 
-const loginErrorMsg = `
-<div x-data="{show:true}" x-init="setTimeout(() => show=false, 3000)" x-show="show" 
-class="flex p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
-role="alert">
-    <div class="w-full">
-        <span class="w-80 text-center inline-block font-medium">Credentials provided are invalid</span>
+const renderMsg = (msg) => {
+    return `
+    <div x-data="{show:true}" x-init="setTimeout(() => show=false, 10000)" x-show="show"
+        class="flex p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg"
+        role="alert">
+        <div class="w-full">
+            <span class="error-text text-center inline-block font-medium">${msg}</span>
+        </div>
     </div>
-</div>
-`;
+    `;
+};
 
-let registerErrorMsg = `
-<div class="flex p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
-    role="alert">
-    <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor"
-        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd"
-            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-            clip-rule="evenodd"></path>
-    </svg>
-    <span class="sr-only">Danger</span>
-    <div>
-        <span class="font-medium">Ensure that these requirements are met:</span>
-        <ul class="mt-1.5 ml-4 text-red-700 list-disc list-inside">
-            <li>Required 30 characters or fewer. Letters, digits and @/./+/-/_ only.</li>
-            <li>Required Letters (upper and lower), digits and /./-/_ only.</li>
-            <li>Required 8 characters or more, letters digits and symbols</li>
-        </ul>
-    </div>
-</div>
-`;
-
-const sendReq = (url, type, data, errorMsg, location) => {
+const sendReq = (url, type, data, location) => {
     $.ajax({
         url: url,
         type: type,
@@ -44,7 +35,7 @@ const sendReq = (url, type, data, errorMsg, location) => {
             console.log(data);
             if (data.error) {
                 reset();
-                $(".error").html(errorMsg);
+                $(".error").html(renderMsg(data.msg));
             } else {
                 window.localStorage.setItem("name", data.name);
                 window.location = location;
@@ -56,7 +47,7 @@ const sendReq = (url, type, data, errorMsg, location) => {
     });
 };
 
-let form = $("#form");
+const form = $("#form");
 
 if (form && form != "undefined") {
     let action = form.attr("data-type");
@@ -69,7 +60,6 @@ if (form && form != "undefined") {
                 "login",
                 "post",
                 { email: $("#email").val(), password: $("#password").val() },
-                loginErrorMsg,
                 "/chat"
             );
 
@@ -83,8 +73,8 @@ if (form && form != "undefined") {
                 name: $("#name").val(),
                 email: $("#email").val(),
                 password: $("#password").val(),
+                image: $("#av").val(),
             },
-            registerErrorMsg,
             "login"
         );
     });

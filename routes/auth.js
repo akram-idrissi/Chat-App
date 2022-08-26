@@ -11,11 +11,13 @@ router.get("/register", (req, res) => {
 
 router.post("/register", async (req, res) => {
     const isValid = inputValidator(req, true);
-    if (!isValid) return res.json({ error: true, valid: true });
+    if (typeof isValid === "string")
+        return res.json({ error: true, msg: isValid });
 
     // verifying if email exists
     const emailExist = await User.findOne({ email: req.body.email });
-    if (emailExist) return res.json({ error: true, email: true });
+    if (emailExist)
+        return res.json({ error: true, msg: "Email already exists" });
 
     // hashing password
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -23,6 +25,7 @@ router.post("/register", async (req, res) => {
     let user = new User({
         name: req.body.name,
         email: req.body.email,
+        image: req.body.image,
         password: hashedPassword,
     });
 
@@ -37,12 +40,16 @@ router.get("/login", (req, res) => {
 
 router.post("/login", async (req, res) => {
     const isValid = inputValidator(req);
-    if (!isValid) return res.json({ error: true });
+    if (!isValid) return res.json({ error: true, msg: isValid });
 
     // get user if it exists
     let user = await User.findOne({ email: req.body.email });
 
-    if (!user) return res.json({ error: true });
+    if (!user)
+        return res.json({
+            error: true,
+            msg: "Credentials provided are invalid",
+        });
 
     // comparing client and db passwords
     const validPassword = await bcrypt.compare(
@@ -50,7 +57,11 @@ router.post("/login", async (req, res) => {
         user.password
     );
 
-    if (!validPassword) return res.json({ error: true });
+    if (!validPassword)
+        return res.json({
+            error: true,
+            msg: "Credentials provided are invalid",
+        });
 
     user = user.toObject();
     delete user.password;

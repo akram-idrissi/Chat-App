@@ -12,6 +12,8 @@ const authRouter = require("./routes/auth");
 const Message = require("./models/message");
 const cookieParser = require("cookie-parser");
 
+var response = null;
+
 dotenv.config();
 const app = express();
 const server = createServer(app);
@@ -35,6 +37,7 @@ app.use(express.static("public/assets"));
 
 // rendrering views according to path
 app.use(function (req, res, next) {
+    response = res;
     if (req.path.includes("auth"))
         app.set("views", path.join(__dirname, "views/auth"));
     else app.set("views", path.join(__dirname, "views/components"));
@@ -47,15 +50,20 @@ app.get("/chat", isAuth, (req, res) => {
     res.render("chat");
 });
 
+app.post("/chat", isAuth, (req, res) => {
+    res.render("chat");
+});
+
 var onlineUsers = [];
 var cacheOnlineUsers = new Map();
 
-/* lgoic */
+/* logic */
 const io = new Server(server);
 io.on("connection", async (socket) => {
     /* sending online users to connected ones */
     const cookies = cookie.parse(socket.handshake.headers.cookie);
     let user = getUser(cookies, socket);
+    console.log("server ", user);
     // preventing to add same user to onlineUsers when refreshing the page
     if (typeof cacheOnlineUsers.get(user._id) === "undefined") {
         onlineUsers.push(user);

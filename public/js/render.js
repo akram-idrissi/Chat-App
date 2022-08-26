@@ -19,7 +19,7 @@ function displayOnlineUser(user) {
         <input id="h-s" type="hidden" value="${user.socketID}">   
         <input id="h-d" type="hidden" value="${user._id}">   
         <div class="flex">
-            <img class="w-14 h-14 rounded-xl mr-3" src="default.jpg"
+            <img class="pr-pic w-14 h-14 rounded-xl mr-3" src="${user.image}"
                 alt="profile picture" srcset="">
             <div class="w-24">
                 <p title="${user.name}" class="truncate text-white text-md font-sans mb-1">${user.name}</p>
@@ -41,7 +41,7 @@ function addToOnlineUsers(user) {
         <button data-sid="${user.socketID}" onclick="displayReceiver(this)" class="block focus:outline-none w-11/12 mx-auto mb-3 p-3 hover:bg-tenth rounded-xl transition duration-500" data-uid="${user._id}">
             <div class="flex justify-between items-center">
                 <div class="text-lg text-main flex justify-between items-center">
-                    <img id="leftbar-img" class="w-10 h10 rounded-xl" src="default.jpg" alt="active-people-profile">
+                    <img id="leftbar-img" class="w-10 h10 rounded-xl" src="${user.image}" alt="active-people-profile">
                     <span id="leftbar-username" class="ml-4">${user.name}</span>
                 </div>
                 <div
@@ -53,25 +53,28 @@ function addToOnlineUsers(user) {
 }
 
 function displayReceiver(element) {
-    $("#msg-container").html("");
+    // clearing containers bedore displaying information
     $("#topbar-user").html("");
-    let receiverSID = $(element).attr("data-sid");
-    let receiverUID = $(element).attr("data-uid");
-    $("#topbar-user").attr("data-ref", receiverSID);
-    $("#topbar-user").attr("data-uef", receiverUID);
+    $("#msg-container").html("");
     $(element).find(`.notification`).html("");
+
+    // getting data
+    let receiverSID = $(element).attr("data-sid");
+    let image = $(element).find("#leftbar-img").attr("src");
+    let username = $(element).find("#leftbar-username").html();
+
+    // setting the placeholder in the input field
+    $("#input").attr("placeholder", `Message with ${username}`);
+
+    // setting helper attributes
+    $("#topbar-user").attr("data-ref", receiverSID);
+    $("#topbar-user").attr("data-uef", $(element).attr("data-uid"));
     $(element)
         .find(`.notification`)
         .attr(
             "class",
             "flex items-center justify-center text-xs text-main text-center bg-nineth rounded-md"
         );
-    let image = $(element).find("#leftbar-img").attr("src");
-    let username = $(element).find("#leftbar-username").html();
-    $("#input").attr(
-        "placeholder",
-        `Message with ${$(element).find("#leftbar-username").html()}`
-    );
 
     let child = `
         <button id="arrow-left" class="mr-4 focus:outline-none lg:hidden md:hidden">
