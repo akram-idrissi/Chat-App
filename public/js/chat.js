@@ -1,44 +1,61 @@
 var socket = io();
 
+// display info of connected user
+socket.on("user", (user) => {
+    displayOnlineUser(user);
+    socket.emit("onlineUsers", user);
+});
+
 // display list of connected users
-socket.on("usersList", (connectedUsers) => {
-    $("#members").html(" ");
-    for (let i = 0; i < connectedUsers.length; i++) {
-        addToOnlineUsers(connectedUsers[i]);
-    }
+socket.on("onlineUsers", (onlineUsers) => {
+    $("#members").html("");
+    // removing the current user from the online users list
+    // to prevent him to send a msg to himself
+    onlineUsers = onlineUsers = onlineUsers.filter(function (item) {
+        return item._id != $("#h-d").val();
+    });
+    onlineUsers.map((onlineUser) => addToOnlineUsers(onlineUser));
 });
 
 // send a private message
 $("#form").submit((event) => {
-    console.log("input");
+    // preventing the form to auto reload
     event.preventDefault();
 
+    // getting data
     let input = $("#input");
     let text = input.val();
-    let receiver = $("#topbar-user").attr("data-ref");
+    let receiverID = $("#topbar-user").attr("data-ref");
 
-    if (text && receiver) {
-        socket.emit("client-msg", text, receiver);
-        input.val("");
+    // if text and receiverid are not empty
+    if (text && receiverID) {
+        socket.emit("to-receiver", text, receiverID);
+        displayMessage({
+            text: text,
+            sender: { image: $(".pr-pic").attr("src") },
+        });
     }
+    input.val("");
 });
 
-socket.on("sender", (message) => {
-    displayMessage(message);
-});
+socket.on("to-receiver", (message) => {
+    console.log(message);
+    /* 
+        check whethere the receiver container is empty or not
+        if so a message will be displayed in the message section 
+        otherwise a notification will show up 
+    */
+    let senderNotif = $(`#${message.sender._id}`);
+    let receiverID = $("#topbar-user").attr("data-ref");
 
-socket.on("server-msg", (message) => {
-    let notification = $(`#${message.sender.socketID}`);
-    let attribute = $("#topbar-user").attr("data-ref");
-
-    if (!attribute || attribute != message.sender.socketID) {
-        if (notification) {
-            notification.attr("class", "notification badge badge-pad");
-            notificationValue = notification.html();
+    if (!receiverID || receiverID != message.sender.socketID) {
+        if (senderNotif) {
+            senderNotif.toggleClass("px-2 py-1");
+            let notificationValue = senderNotif.html();
             if (!notificationValue) {
-                notification.html(1);
+                senderNotif.html(1);
             } else {
-                notification.html(Number(notificationValue) + 1);
+                senderNotif.html(Number(notificationValue) + 1);
             }
         }
     } else {

@@ -68,7 +68,7 @@ if (form && form != "undefined") {
             sendReq(
                 "login",
                 "post",
-                { email: $("#email").val(), email: $("#password").val() },
+                { email: $("#email").val(), password: $("#password").val() },
                 loginErrorMsg,
                 "/chat"
             );

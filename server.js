@@ -9,6 +9,7 @@ const { createServer } = require("http");
 const { isAuth } = require("./lib/token");
 const { getUser } = require("./lib/utils");
 const authRouter = require("./routes/auth");
+const Message = require("./models/message");
 const cookieParser = require("cookie-parser");
 
 dotenv.config();
@@ -46,56 +47,63 @@ app.get("/chat", isAuth, (req, res) => {
     res.render("chat");
 });
 
-var counter = 1;
-var usersList = [];
-var temporaryName = `akram ${counter}`;
-var image = `https://bootdey.com/img/Content/avatar/avatar${counter}.png`;
+var onlineUsers = [];
+var cacheOnlineUsers = new Map();
 
 /* lgoic */
 const io = new Server(server);
 io.on("connection", async (socket) => {
-    // when user is connected
+    /* sending online users to connected ones */
     const cookies = cookie.parse(socket.handshake.headers.cookie);
-    const user = getUser(cookies);
-    
+    let user = getUser(cookies, socket);
+    // preventing to add same user to onlineUsers when refreshing the page
+    if (typeof cacheOnlineUsers.get(user._id) === "undefined") {
+        onlineUsers.push(user);
+        cacheOnlineUsers.set(user._id, user);
+    } else {
+        updateUser(user);
+    }
+    // sending user info to the connected user
+    io.to(socket.id).emit("user", user);
 
-
-
-
-
-
-    /* 
-    updateData(counter++);
-    usersList.push(await addUser(socket.id, temporaryName, image));
-    io.emit("usersList", usersList);
-
-    // when client send a msg
-    socket.on("client-msg", async (text, receiverID) => {
-        let message = "";
-        let sender = usersList.filter((user) => user.socketID == socket.id)[0];
-        let receiver = usersList.filter(
-            (user) => user.socketID == receiverID
-        )[0];
-        message = await addMessage(sender, receiver, text);
-        socket.to(receiverID).emit("server-msg", message);
-        socket.emit("sender", message);
+    // sending online users to all connected clients
+    socket.on("onlineUsers", () => {
+        io.emit("onlineUsers", onlineUsers);
     });
 
-    // load msgs on when clicking an online user
+    /* sending to msg to a user */
+    socket.on("to-receiver", async (text, receiverID) => {
+        let message = "";
+        let sender = onlineUsers.filter((u) => u.socketID == socket.id)[0];
+        let receiver = onlineUsers.filter((u) => u.socketID == receiverID)[0];
+        message = new Message({
+            sender: sender,
+            receiver: receiver,
+            text: text,
+        });
+        message = await message.save();
+        io.to(receiverID).emit("to-receiver", message);
+    });
+
+    // load msgs when clicking an online user
     socket.on("load-msgs", async (receiverID) => {
         let messages = [];
-        let sender = usersList.filter((user) => user.socketID == socket.id)[0];
-        let receiver = usersList.filter(
-            (user) => user.socketID == receiverID
-        )[0];
-        messages = await findMessages(sender, receiver);
-        socket.emit("private-msgs", messages, socket.id);
-    }); */
+        let sender = onlineUsers.filter((u) => u.socketID == socket.id)[0];
+        let receiver = onlineUsers.filter((u) => u.socketID == receiverID)[0];
+        messages = await Message.find({
+            $or: [
+                { "sender._id": sender._id, "receiver._id": receiver._id },
+                { "sender._id": receiver._id, "receiver._id": sender._id },
+            ],
+        });
+        socket.emit("load-msgs", messages, sender, receiver);
+    });
 });
 
-function updateData(c) {
-    temporaryName = `akram ${c}`;
-    image = `https://bootdey.com/img/Content/avatar/avatar${c}.png`;
-}
+const updateUser = (user) => {
+    var index = onlineUsers.findIndex((x) => x._id == user._id);
+    onlineUsers[index] = user;
+    cacheOnlineUsers.set(user._id, user);
+};
 
 server.listen(5000);

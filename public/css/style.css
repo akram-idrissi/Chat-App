@@ -59,12 +59,11 @@
 /* other customisations */
 .badge {
     line-height: 1;
-    font-size: 75%;
-    font-weight: 700;
+    font-size: 88%;
     text-align: center;
     white-space: nowrap;
     display: inline-block;
-    border-radius: 0.25rem;
+    border-radius: 0.375rem;
     vertical-align: baseline;
     color: rgb(167, 168, 168);
     background-color: rgb(36, 36, 36);
@@ -73,7 +72,7 @@
 }
 
 .badge-pad {
-    padding: 0.25em 0.4em;
+    padding: 0.25rem 0.5rem;
 }
 
 #add-group > svg {

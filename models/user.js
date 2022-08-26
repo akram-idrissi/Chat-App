@@ -1,14 +1,3 @@
-/* class User {
-    constructor(socketID, name, image) {
-        this.socketID = socketID;
-        this.name = name;
-        this.image = image;
-    }
-}
-
-module.exports = { User };
- */
-
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({

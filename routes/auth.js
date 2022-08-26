@@ -32,7 +32,7 @@ router.post("/register", async (req, res) => {
 
 // login end points
 router.get("/login", (req, res) => {
-    res.render("login");
+    return res.render("login");
 });
 
 router.post("/login", async (req, res) => {
