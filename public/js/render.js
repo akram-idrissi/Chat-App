@@ -99,7 +99,6 @@ function displayReceiver(element) {
 }
 
 socket.on("load-msgs", (messages, sender, receiver) => {
-    console.log(messages);
     try {
         for (let i = 0; i < messages.length; i++) {
             let message = messages[i];
@@ -117,7 +116,7 @@ socket.on("load-msgs", (messages, sender, receiver) => {
 });
 
 function displayMessage(message, self = true) {
-    let child = `<div class="flex flex-row justify-end">
+    let child = `<div class="flex flex-row justify-end mb-4">
     <div class="messages text-sm text-white">
         <div>
             <div class="text-right">
@@ -150,7 +149,7 @@ function displayMessage(message, self = true) {
 
     if (!self) {
         child = `
-        <div class="flex flex-row justify-start">
+        <div class="flex flex-row justify-start mb-4">
         <div class="w-8 h-8 relative flex flex-shrink-0 mr-4">
             <img
                 class="rounded-lg w-full h-full object-cover"
@@ -181,4 +180,6 @@ function displayMessage(message, self = true) {
     }
 
     $("#msg-container").append(child);
+    let msgContainer = document.getElementById("msg-container");
+    msgContainer.scrollTo(0, msgContainer.scrollHeight);
 }

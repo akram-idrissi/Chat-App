@@ -17,7 +17,7 @@ socket.on("onlineUsers", (onlineUsers) => {
     onlineUsers.map((onlineUser) => addToOnlineUsers(onlineUser));
 });
 
-// send a private message
+// send a message
 $("#form").submit((event) => {
     // preventing the form to auto reload
     event.preventDefault();
@@ -39,7 +39,6 @@ $("#form").submit((event) => {
 });
 
 socket.on("to-receiver", (message) => {
-    console.log(message);
     /* 
         check whethere the receiver container is empty or not
         if so a message will be displayed in the message section 
@@ -50,7 +49,7 @@ socket.on("to-receiver", (message) => {
 
     if (!receiverID || receiverID != message.sender.socketID) {
         if (senderNotif) {
-            senderNotif.toggleClass("px-2 py-1");
+            senderNotif.addClass("px-2 py-1");
             let notificationValue = senderNotif.html();
             if (!notificationValue) {
                 senderNotif.html(1);
