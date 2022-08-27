@@ -57,19 +57,25 @@ app.post("/chat", isAuth, (req, res) => {
 var onlineUsers = [];
 var cacheOnlineUsers = new Map();
 
+/* backup */
+var messages = [];
+var receiver = null;
+var notifications = [];
+
 /* logic */
 const io = new Server(server);
 io.on("connection", async (socket) => {
     /* sending online users to connected ones */
     const cookies = cookie.parse(socket.handshake.headers.cookie);
     let user = getUser(cookies, socket);
-    console.log("server ", user);
     // preventing to add same user to onlineUsers when refreshing the page
     if (typeof cacheOnlineUsers.get(user._id) === "undefined") {
         onlineUsers.push(user);
         cacheOnlineUsers.set(user._id, user);
     } else {
         updateUser(user);
+        // sending data that was rendered before refreshing
+        io.to(socket.id).emit("re-populate");
     }
     // sending user info to the connected user
     io.to(socket.id).emit("user", user);

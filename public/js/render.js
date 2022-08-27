@@ -22,7 +22,7 @@ function displayOnlineUser(user) {
             <img class="pr-pic w-14 h-14 rounded-xl mr-3" src="${user.image}"
                 alt="profile picture" srcset="">
             <div class="w-24">
-                <p title="${user.name}" class="truncate text-white text-md font-sans mb-1">${user.name}</p>
+                <p title="${user.name}" class="u-name truncate text-white text-md font-sans mb-1">${user.name}</p>
                 <span class="block text-xs text-fourth w-56">
                     <i class="text-sixth fa fa-circle" aria-hidden="true"></i>
                     <span>Active for chat</span>
@@ -38,7 +38,7 @@ function displayOnlineUser(user) {
 function addToOnlineUsers(user) {
     if (!user) return;
     let elment = `
-        <button data-sid="${user.socketID}" onclick="displayReceiver(this)" class="block focus:outline-none w-11/12 mx-auto mb-3 p-3 hover:bg-tenth rounded-xl transition duration-500" data-uid="${user._id}">
+        <button data-sid="${user.socketID}" onclick="displayReceiver(this)" class="on-user block focus:outline-none w-11/12 mx-auto mb-3 p-3 hover:bg-tenth rounded-xl transition duration-500" data-uid="${user._id}">
             <div class="flex justify-between items-center">
                 <div class="text-lg text-main flex justify-between items-center">
                     <img id="leftbar-img" class="w-10 h10 rounded-xl" src="${user.image}" alt="active-people-profile">
@@ -49,6 +49,7 @@ function addToOnlineUsers(user) {
             </div>
         </button>
         `;
+
     $("#members").append(elment);
 }
 
@@ -60,6 +61,7 @@ function displayReceiver(element) {
 
     // getting data
     let receiverSID = $(element).attr("data-sid");
+    let receiverUID = $(element).attr("data-uid");
     let image = $(element).find("#leftbar-img").attr("src");
     let username = $(element).find("#leftbar-username").html();
 
@@ -84,7 +86,8 @@ function displayReceiver(element) {
             </svg>
         </button>
         <div class="flex items-center">
-            <div class="w-10 h-10 mr-4 relative flex flex-shrink-0">
+            <div class="w-10 h-10 mr-4 relative flex flex-shrink-0" >
+                <input type="hidden" id="topbar-rid" value="${receiverUID}">
                 <img id="topbar-img" class="rounded-lg w-full h-full object-cover"
                     src="${image}" alt="" />
             </div>
@@ -94,11 +97,14 @@ function displayReceiver(element) {
         </div>
     `;
 
+    // saving in localstorage for futuer uses
+    window.localStorage.setItem("receiver", JSON.stringify(child));
     $("#topbar-user").append(child);
     socket.emit("load-msgs", receiverSID);
 }
 
 socket.on("load-msgs", (messages, sender, receiver) => {
+    window.localStorage.setItem("messages", JSON.stringify(messages));
     try {
         for (let i = 0; i < messages.length; i++) {
             let message = messages[i];
@@ -116,7 +122,7 @@ socket.on("load-msgs", (messages, sender, receiver) => {
 });
 
 function displayMessage(message, self = true) {
-    let child = `<div class="flex flex-row justify-end mb-4">
+    let child = `<div class="msg flex flex-row justify-end mb-4">
     <div class="messages text-sm text-white">
         <div>
             <div class="text-right">
@@ -149,7 +155,7 @@ function displayMessage(message, self = true) {
 
     if (!self) {
         child = `
-        <div class="flex flex-row justify-start mb-4">
+        <div class="msg flex flex-row justify-start mb-4">
         <div class="w-8 h-8 relative flex flex-shrink-0 mr-4">
             <img
                 class="rounded-lg w-full h-full object-cover"
