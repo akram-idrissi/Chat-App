@@ -57,11 +57,6 @@ app.post("/chat", isAuth, (req, res) => {
 var onlineUsers = [];
 var cacheOnlineUsers = new Map();
 
-/* backup */
-var messages = [];
-var receiver = null;
-var notifications = [];
-
 /* logic */
 const io = new Server(server);
 io.on("connection", async (socket) => {
