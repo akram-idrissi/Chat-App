@@ -23,10 +23,25 @@ function displayOnlineUser(user) {
                 alt="profile picture" srcset="">
             <div class="w-24">
                 <p title="${user.name}" class="u-name truncate text-white text-md font-sans mb-1">${user.name}</p>
-                <span class="block text-xs text-fourth w-56">
-                    <i class="text-sixth fa fa-circle" aria-hidden="true"></i>
+                <span class="flex items-center text-xs text-fourth w-56">
+                    <span class="inline-block mr-1 w-3 h-3 rounded-full" style="background-color: #54d396"></span>
                     <span>Active for chat</span>
                 </span>
+            </div>
+        </div>
+        <button x-data={show:false} @click="show=true">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+            </svg>
+        </button>
+
+        <div  x-show="show" x-cloak class="class="w-28 absolute -right-12 top-36 rounded-md shadow-xl bg-fith focus:outline-none">
+            <div class="py-1" role="none">
+                <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                <a href="#" class="text-white block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2">Profile</a>
+                <form method="POST" action="/logout">
+                    <button type="submit" class="text-white block w-full text-left px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Log out</button>
+                </form>
             </div>
         </div>
     </div>

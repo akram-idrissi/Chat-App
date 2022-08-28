@@ -78,6 +78,12 @@ io.on("connection", async (socket) => {
         io.emit("onlineUsers", onlineUsers);
     });
 
+    /* removing user fro online users on logout */
+    socket.on("disconnect", (socket) => {
+        onlineUsers = onlineUsers.filter((u) => u.socketID != socket.id);
+        io.emit("onlineUsers", onlineUsers);
+    });
+
     /* sending to msg to a user */
     socket.on("to-receiver", async (text, receiverID) => {
         let message = "";
