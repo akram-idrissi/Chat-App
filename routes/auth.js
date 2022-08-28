@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
-const User = require("../models/user");
 const token = require("../lib/token");
+const User = require("../models/user");
 const router = require("express").Router();
 const { inputValidator } = require("../lib/validation");
 
@@ -73,14 +73,14 @@ router.post("/login", async (req, res) => {
 });
 
 // logout end points
-router.get("/logout", (req, res) => {
+router.get("/logout", token.isAuth, (req, res) => {
     token.deleteTokens(res);
     res.redirect("/auth/login");
 });
 
-router.post("/logout", (req, res) => {
+router.post("/logout", token.isAuth, (req, res) => {
     token.deleteTokens(res);
-    res.redirect("/login");
+    res.redirect("/auth/login");
 });
 
 module.exports = router;

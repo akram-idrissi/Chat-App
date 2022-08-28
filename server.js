@@ -69,8 +69,6 @@ io.on("connection", async (socket) => {
         cacheOnlineUsers.set(user._id, user);
     } else {
         updateUser(user);
-        // sending data that was rendered before refreshing
-        io.to(socket.id).emit("re-populate");
     }
     // sending user info to the connected user
     io.to(socket.id).emit("user", user);
@@ -85,6 +83,7 @@ io.on("connection", async (socket) => {
         let message = "";
         let sender = onlineUsers.filter((u) => u.socketID == socket.id)[0];
         let receiver = onlineUsers.filter((u) => u.socketID == receiverID)[0];
+        io.to(receiverID).emit("to-receiver", message);
         message = new Message({
             sender: sender,
             receiver: receiver,

@@ -1,6 +1,6 @@
 function regularTime(date) {
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
+    let hours = date[0];
+    let minutes = date[1];
     const ampm = hours >= 12 ? "pm" : "am";
 
     hours %= 12;
@@ -97,17 +97,11 @@ function displayReceiver(element) {
         </div>
     `;
 
-    // saving in localstorage for futur uses
     $("#topbar-user").append(child);
-    window.localStorage.setItem(
-        "receiver",
-        JSON.stringify($("#receiver-container").html())
-    );
     socket.emit("load-msgs", receiverSID);
 }
 
 socket.on("load-msgs", (messages, sender, receiver) => {
-    window.localStorage.setItem("messages", JSON.stringify(messages));
     for (let i = 0; i < messages.length; i++) {
         let message = messages[i];
         if (message.sender._id == receiver._id) {
@@ -121,67 +115,71 @@ socket.on("load-msgs", (messages, sender, receiver) => {
 });
 
 function displayMessage(message, self = true) {
-    let child = `<div class="msg flex flex-row justify-end mb-4">
-    <div class="messages text-sm text-white">
-        <div>
-            <div class="text-right">
-                <span class="name inline-block text-md">You</span>
-            </div>
+    let child = null;
+    if (self) {
+        child = `
+            <div class="right msg flex flex-row justify-end mb-4">
+                <div class="messages text-sm text-white">
+                    <div>
+                        <div class="text-right">
+                            <span class="name inline-block text-md">You</span>
+                        </div>
 
-            <p
-                style="background-color: #387aff;"
-                class="message p-3 my-1 text-white rounded-lg rounded-tr-none max-w-xs lg:max-w-md"
-            >
-                ${message.text}
-            </p>
+                        <p
+                            style="background-color: #387aff;"
+                            class="message p-3 my-1 text-white rounded-lg rounded-tr-none max-w-xs lg:max-w-md"
+                        >
+                            ${message.text}
+                        </p>
 
-            <div class="flex justify-between items-center">
-                <span class="time inline-block text-xs text-fourth">
-                    ${regularTime(new Date())}
-                </span>
-                
-            </div>
-        </div>
-    </div>
-    <div class="image w-8 h-8 relative flex flex-shrink-0 ml-4">
-        <img
-            class="rounded-lg w-full h-full object-cover"
-            src="${message.sender.image}"
-            alt=""
-        />
-    </div>
-</div>`;
+                        <div class="flex justify-between items-center">
+                            <span class="time inline-block text-xs text-fourth">
+                                ${regularTime(message.sentAt.split("T")[1])}
+                            </span>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="image w-8 h-8 relative flex flex-shrink-0 ml-4">
+                    <img
+                        class="rounded-lg w-full h-full object-cover"
+                        src="${message.sender.image}"
+                        alt=""
+                    />
+                </div>
+            </div>`;
+    }
 
     if (!self) {
         child = `
-        <div class="msg flex flex-row justify-start mb-4">
-        <div class="w-8 h-8 relative flex flex-shrink-0 mr-4">
-            <img
-                class="rounded-lg w-full h-full object-cover"
-                src="${message.sender.image}"
-                alt=""
-            />
-        </div>
-        <div class="messages">
-            <div>
-                <div>
-                    <span class="name inline-block text-md">
-                        ${message.sender.name}
-                    </span>
+            <div class="left msg flex flex-row justify-start mb-4">
+                <div class="image w-8 h-8 relative flex flex-shrink-0 mr-4">
+                    <img
+                        class="rounded-lg w-full h-full object-cover"
+                        src="${message.sender.image}"
+                        alt=""
+                    />
                 </div>
-                <p class="message p-3 bg-fith text-eleventh my-1 rounded-lg rounded-tl-none max-w-xs lg:max-w-md">
-                    ${message.text}
-                </p>
-                <div class="flex justify-between items-center">
-                    <span class="time inline-block text-xs text-fourth">
-                        ${regularTime(new Date())}
-                    </span>
-                    
+                <div class="messages">
+                    <div>
+                        <div>
+                            <span class="name inline-block text-md">
+                                ${message.sender.name}
+                            </span>
+                        </div>
+                        <p class="message p-3 bg-fith text-eleventh my-1 rounded-lg rounded-tl-none max-w-xs lg:max-w-md">
+                            ${message.text}
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <span class="time inline-block text-xs text-fourth">
+                                ${regularTime(message.sentAt.split("T")[1])}
+                            </span>
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-        `;
+            `;
     }
 
     $("#msg-container").append(child);
