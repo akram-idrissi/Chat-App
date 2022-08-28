@@ -97,27 +97,26 @@ function displayReceiver(element) {
         </div>
     `;
 
-    // saving in localstorage for futuer uses
-    window.localStorage.setItem("receiver", JSON.stringify(child));
+    // saving in localstorage for futur uses
     $("#topbar-user").append(child);
+    window.localStorage.setItem(
+        "receiver",
+        JSON.stringify($("#receiver-container").html())
+    );
     socket.emit("load-msgs", receiverSID);
 }
 
 socket.on("load-msgs", (messages, sender, receiver) => {
     window.localStorage.setItem("messages", JSON.stringify(messages));
-    try {
-        for (let i = 0; i < messages.length; i++) {
-            let message = messages[i];
-            if (message.sender._id == receiver._id) {
-                displayMessage(message, false);
-                continue;
-            } else if (message.sender._id == sender._id) {
-                displayMessage(message);
-                continue;
-            }
+    for (let i = 0; i < messages.length; i++) {
+        let message = messages[i];
+        if (message.sender._id == receiver._id) {
+            displayMessage(message, false);
+            continue;
+        } else if (message.sender._id == sender._id) {
+            displayMessage(message);
+            continue;
         }
-    } catch (error) {
-        console.log(error);
     }
 });
 

@@ -13,8 +13,8 @@ socket.on("re-populate", () => {
     const onlineUsers = JSON.parse(window.localStorage.getItem("online-users"));
 
     $("#members").html("");
-    $("#topbar-user").html("");
     $("#msg-container").html("");
+    $("#receiver-container").html("");
 
     console.log("receiver ", receiver);
     console.log("onlineUsers ", onlineUsers);
@@ -85,7 +85,7 @@ socket.on("to-receiver", (message) => {
 const populate = (messages, receiver, onlineUsers) => {
     // populate receiver
     if (receiver && typeof receiver !== "undefined")
-        $("#topbar-user").append(receiver);
+        $("#receiver-container").html(receiver);
 
     // populate online users
     if (onlineUsers && typeof onlineUsers !== "undefined") {
