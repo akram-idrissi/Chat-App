@@ -12,7 +12,7 @@ This is a node.js chat application in its early stages, powered by Sock.io, Expr
 
 # Setup
 
-1. Open your terminal and clone this repo using `git clone https://github.com/akram-idrissi/Chat-App.git`.
+1. Open your terminal and clone this repo using `git clone https://github.com/akram-idrissi/Nodejs-Chat-App.git`.
 2. Create .env file from .env.example file and adjust database parameters.
 3. For `ACCESS_SECRET_TOKEN` and `REFRESH_SECRET_TOKEN`, run the following code in your terminal:
 

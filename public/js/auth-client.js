@@ -15,7 +15,7 @@ const reset = () => {
 
 const renderMsg = (msg) => {
     return `
-    <div x-data="{show:true}" x-init="setTimeout(() => show=false, 10000)" x-show="show"
+    <div x-data="{show:true}" x-init="setTimeout(() => show=false, 5000)" x-show="show"
         class="flex p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg"
         role="alert">
         <div class="w-full">

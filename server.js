@@ -37,14 +37,14 @@ app.use(express.static("public/assets"));
 // rendrering views according to path
 app.use(function (req, res, next) {
     response = res;
-    if (req.path.includes("auth"))
-        app.set("views", path.join(__dirname, "views/auth"));
-    else app.set("views", path.join(__dirname, "views/components"));
+    if (req.path.includes("chat"))
+        app.set("views", path.join(__dirname, "views/components"));
+    else app.set("views", path.join(__dirname, "views/auth"));
     next();
 });
 
 // routes
-app.use("/auth", authRouter);
+app.use("/", authRouter);
 app.get("/chat", isAuth, (req, res) => {
     res.render("chat");
 });
@@ -84,7 +84,7 @@ io.on("connection", async (socket) => {
     });
 
     /* removing user fro online users on logout */
-    socket.on("disconnect", (socket) => {
+    socket.on("disconnect", () => {
         onlineUsers = onlineUsers.filter((u) => u.socketID != socket.id);
         io.emit("onlineUsers", onlineUsers);
     });
