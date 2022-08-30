@@ -34,26 +34,22 @@
     }
 
     function showProfile() {
-        $("#profile").on("click", () => {
-            console.log("hit");
-            $.ajax({
-                url: "profile",
-                type: "GET",
-                dataType: "json",
-                success: function (data, status, xhr) {
-                    console.log(data);
-                    if (data.error) {
-                        console.log("error");
-                    } else {
-                        console.log(data);
-                        /* window.localStorage.setItem("name", data.name);
-                        window.location = location; */
-                    }
-                },
-                error: function (xhr, status, err) {
-                    reset();
-                },
-            });
+        console.log("hit");
+        $.ajax({
+            url: "profile",
+            type: "get",
+            dataType: "json",
+            success: function (data, status, xhr) {
+                if (data.error) {
+                    console.log("error");
+                    return
+                }
+
+                renderProfile(data.user)
+            },
+            error: function (xhr, status, err) {
+                reset();
+            },
         });
 
         $(".profile").toggleClass("hidden");
@@ -61,9 +57,17 @@
     }
 
     $("#home").click(() => {
-        $(".profile").toggleClass("hidden");
+        $(".profile").toggleClass("hidden");    
         $("#left-section").toggleClass("hidden");
     })
+
+    function renderProfile(user) {
+        $(".img-profile").attr("src", user.image);
+        $(".display-name-profile").html(user.name);
+        $(".name-profile").val(user.name)
+        $(".email-profile").val(user.email);
+        
+    }
 
 
 </script>

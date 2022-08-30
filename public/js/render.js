@@ -38,9 +38,9 @@ function displayOnlineUser(user) {
 
             <div  x-show="show" x-cloak class="w-28 absolute -right-12 top-36 rounded-md shadow-xl bg-fith focus:outline-none">
                 <div class="py-1" role="none">
-                    <button id="profile" onclick="showProfile()" class="text-white block w-full text-left px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Profile</button>
-                    <form method="POST" action="/auth/logout">
-                        <button type="submit" class="text-white block w-full text-left px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Log out</button>
+                    <button id="profile" onclick="showProfile()" class="hover:bg-gray-500 rounded-md text-white block w-full text-left px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Profile</button>
+                    <form method="POST" action="/auth/logout" class="hover:bg-gray-500 rounded-md">
+                        <button type="submit" class="hover:bg-gray-500 rounded-md text-white block w-full text-left px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Log out</button>
                     </form>
                 </div>
             </div>
