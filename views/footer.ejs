@@ -1,25 +1,75 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="jquery-3.6.0.min.js"></script>
-<script src="client.js"></script>
-<script src="utils.js"></script>
-<script src="35f7402a75.js"></script>
-<script src="script.js"></script>
+<script src="chat.js"></script>
+<script src="render.js"></script>
 
 <script>
-    function showHide() {
-        document.getElementById("left-section").classList.toggle("w-screen");
+    const showHide = () => {
+        $("#left-section").toggleClass("w-screen");
     }
 
-    document.getElementById("arrow-left").addEventListener("click", () => {
-        document.getElementById("close").classList.toggle("block");
+    $("#arrow-left").on("click", () => {
+        $("#close").toggleClass("block");
         showHide();
     });
 
-    document.getElementById("close").addEventListener("click", () => {
+    $("#close").on("click", () => {
         showHide();
-        document.getElementById("arrow-left").classList.toggle("block");
-
+        $("#arrow-left").toggleClass("block");
     });
+
+    let username = window.localStorage.getItem("name");
+    if (username) {
+        username = username.charAt(0).toUpperCase() + username.slice(1);
+
+        $(".welcome").html(`
+            <p x-data="{show:true}" x-init="setTimeout(() => show=false, 3000)" x-show="show" x-transition
+            class="fixed bg-blue-500 text-white py-2 px-4 rounded-xl z-20 bottom-20 right-6 font-bold">
+            Welcome back, ${username} :)
+            </p>
+        `);
+        window.localStorage.clear();
+    } else {
+        $(".welcome").html('');
+    }
+
+    function showProfile() {
+        console.log("hit");
+        $.ajax({
+            url: "profile",
+            type: "get",
+            dataType: "json",
+            success: function (data, status, xhr) {
+                if (data.error) {
+                    console.log("error");
+                    return
+                }
+
+                renderProfile(data.user)
+            },
+            error: function (xhr, status, err) {
+                reset();
+            },
+        });
+
+        $(".profile").toggleClass("hidden");
+        $("#left-section").toggleClass("hidden");
+    }
+
+    $("#home").click(() => {
+        $(".profile").toggleClass("hidden");    
+        $("#left-section").toggleClass("hidden");
+    })
+
+    function renderProfile(user) {
+        $(".img-profile").attr("src", user.image);
+        $(".display-name-profile").html(user.name);
+        $(".name-profile").val(user.name)
+        $(".email-profile").val(user.email);
+        
+    }
+
+
 </script>
 
 </body>

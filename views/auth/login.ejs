@@ -1,0 +1,41 @@
+<%- include('header') %>
+    <section>
+        <div class="h-screen bg-second flex flex-col justify-center items-center">
+            <div class="welcome"></div>
+            <div class="error"></div>
+            <div class="py-6 px-8 w-96 bg-fith rounded shadow-md">
+                <form id="form" method="post" data-type="login">
+
+                    <div class="mb-6">
+                        <label for="email" class="block text-white font-bold">Email:</label>
+                        <input type="text" name="email" id="email"
+                            class="input w-full border border-gray-300 py-2 pl-3 rounded mt-2 outline-none focus:ring-indigo-600 :ring-indigo-600" />
+                    </div>
+
+
+                    <div>
+                        <label for="password" class="block text-white font-bold">Password:</label>
+                        <input type="password" name="password" id="password"
+                            class="input w-full border border-gray-300 py-2 pl-3 rounded mt-2 outline-none focus:ring-indigo-600 :ring-indigo-600" />
+
+                        <a href="#"
+                            class="block w-24 mt-1 text-xs font-thin text-main hover:underline hover:text-white">Forget
+                            Password</a>
+                    </div>
+
+                    <button style="background-color: rgb(59 130 246);"
+                        class="mb-2 cursor-pointer py-2 px-4 block mt-6 bg-indigo-500 text-white font-bold w-full text-center rounded">
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="text-center">
+                    <sapn for="email" class="text-xs text-main">Don't have an account ? </sapn>
+                    <a href="register" style="color: rgb(59 130 246);" class="text-xs hover:underline inline-block">
+                        Sign Up
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <%- include('footer') %>
