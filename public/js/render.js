@@ -30,7 +30,7 @@ function displayOnlineUser(user) {
             </div>
         </div>
         <div x-data={show:false}>
-            <button @click="show=!show">
+            <button @click="show=!show"  @click.outside="show=false">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                 </svg>
@@ -38,8 +38,7 @@ function displayOnlineUser(user) {
 
             <div  x-show="show" x-cloak class="w-28 absolute -right-12 top-36 rounded-md shadow-xl bg-fith focus:outline-none">
                 <div class="py-1" role="none">
-                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                    <a href="#" class="text-white block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2">Profile</a>
+                    <button id="profile" onclick="showProfile()" class="text-white block w-full text-left px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Profile</button>
                     <form method="POST" action="/auth/logout">
                         <button type="submit" class="text-white block w-full text-left px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Log out</button>
                     </form>

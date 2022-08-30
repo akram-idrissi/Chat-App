@@ -11,8 +11,7 @@ const { getUser } = require("./lib/utils");
 const authRouter = require("./routes/auth");
 const Message = require("./models/message");
 const cookieParser = require("cookie-parser");
-
-var response = null;
+const { verify } = require("jsonwebtoken");
 
 dotenv.config();
 const app = express();
@@ -52,6 +51,12 @@ app.get("/chat", isAuth, (req, res) => {
 
 app.post("/chat", isAuth, (req, res) => {
     res.render("chat");
+});
+
+app.get("/profile", isAuth, (req, res) => {
+    const user = getUser(req.cookies);
+    if (!user) return res.json({ error: true });
+    return res.json({ user: user });
 });
 
 var onlineUsers = [];

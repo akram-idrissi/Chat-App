@@ -19,7 +19,7 @@
     });
 
     let username = window.localStorage.getItem("name");
-    if (username !== null) {
+    if (username) {
         username = username.charAt(0).toUpperCase() + username.slice(1);
 
         $(".welcome").html(`
@@ -32,6 +32,38 @@
     } else {
         $(".welcome").html('');
     }
+
+    function showProfile() {
+        $("#profile").on("click", () => {
+            console.log("hit");
+            $.ajax({
+                url: "profile",
+                type: "GET",
+                dataType: "json",
+                success: function (data, status, xhr) {
+                    console.log(data);
+                    if (data.error) {
+                        console.log("error");
+                    } else {
+                        console.log(data);
+                        /* window.localStorage.setItem("name", data.name);
+                        window.location = location; */
+                    }
+                },
+                error: function (xhr, status, err) {
+                    reset();
+                },
+            });
+        });
+
+        $(".profile").toggleClass("hidden");
+        $("#left-section").toggleClass("hidden");
+    }
+
+    $("#home").click(() => {
+        $(".profile").toggleClass("hidden");
+        $("#left-section").toggleClass("hidden");
+    })
 
 
 </script>
