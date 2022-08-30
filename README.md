@@ -1,6 +1,6 @@
 # Real time chat application
 
-This is a node.js chat application in its early stages, powered by Sock.io, Express and MongoDB that provides the main functions you'd expect from a chat app, such as private messages, groups, etc.
+This is a node.js chat application in its early stages, powered by Sock.io, Express and MongoDB that provides the main functionalities you'd expect from a chat app, such as private messages, groups, etc.
 
 # Features
 
