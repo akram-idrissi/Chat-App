@@ -54,7 +54,6 @@ app.post("/chat", isAuth, (req, res) => {
 });
 
 app.get("/profile", isAuth, (req, res) => {
-    console.log("server hit");
     const user = getUser(req.cookies);
     if (!user) return res.json({ error: true });
     return res.json({ user: user });

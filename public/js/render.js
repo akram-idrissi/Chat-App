@@ -1,6 +1,18 @@
 function regularTime(date) {
-    let hours = date[0];
-    let minutes = date[1];
+    let d = null;
+    let hours = null;
+    let minutes = null;
+
+    if (typeof date === "undefined") {
+        d = new Date();
+        hours = d.getHours();
+        minutes = d.getMinutes();
+    } else {
+        d = date.split("T")[1];
+        hours = d[0];
+        minutes = d[1];
+    }
+
     const ampm = hours >= 12 ? "pm" : "am";
 
     hours %= 12;
@@ -150,7 +162,7 @@ function displayMessage(message, self = true) {
 
                         <div class="flex justify-between items-center">
                             <span class="time inline-block text-xs text-fourth">
-                                ${regularTime(message.sentAt.split("T")[1])}
+                                ${regularTime(message.sentAt)}
                             </span>
                             
                         </div>
@@ -188,7 +200,7 @@ function displayMessage(message, self = true) {
                         </p>
                         <div class="flex justify-between items-center">
                             <span class="time inline-block text-xs text-fourth">
-                                ${regularTime(message.sentAt.split("T")[1])}
+                                ${regularTime(message.sentAt)}
                             </span>
                             
                         </div>

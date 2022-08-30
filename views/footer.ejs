@@ -1,9 +1,17 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="jquery-3.6.0.min.js"></script>
+<script src="emojies.js"></script>
 <script src="chat.js"></script>
 <script src="render.js"></script>
 
 <script>
+
+    window.onload = function () {
+        emojies.map(emoji => {
+            $("#emojies").append(new Option(emoji, emoji));
+        });
+    }
+
     const showHide = () => {
         $("#left-section").toggleClass("w-screen");
     }
@@ -17,6 +25,11 @@
         showHide();
         $("#arrow-left").toggleClass("block");
     });
+
+
+    $("#add-group").click(() => {
+        $(".group-form").removeClass("hidden")
+    })
 
     let username = window.localStorage.getItem("name");
     if (username) {
@@ -57,7 +70,7 @@
     }
 
     $("#home").click(() => {
-        $(".profile").toggleClass("hidden");    
+        $(".profile").toggleClass("hidden");
         $("#left-section").toggleClass("hidden");
     })
 
@@ -66,10 +79,8 @@
         $(".display-name-profile").html(user.name);
         $(".name-profile").val(user.name)
         $(".email-profile").val(user.email);
-        
+
     }
-
-
 </script>
 
 </body>
