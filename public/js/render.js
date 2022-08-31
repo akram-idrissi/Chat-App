@@ -8,7 +8,7 @@ function regularTime(date) {
         hours = d.getHours();
         minutes = d.getMinutes();
     } else {
-        d = date.split("T")[1];
+        d = date.split("T")[1].split(":");
         hours = d[0];
         minutes = d[1];
     }
@@ -48,12 +48,10 @@ function displayOnlineUser(user) {
                 </svg>
             </button>
 
-            <div  x-show="show" x-cloak class="w-28 absolute -right-12 top-36 rounded-md shadow-xl bg-fith focus:outline-none">
+            <div  x-show="show" x-cloak class="w-28 absolute z-20 -right-12 top-36 rounded-md shadow-xl bg-fith focus:outline-none">
                 <div class="py-1" role="none">
                     <button id="profile" onclick="showProfile()" class="hover:bg-gray-500 rounded-md text-white block w-full text-left px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Profile</button>
-                    <form method="POST" action="/auth/logout" class="hover:bg-gray-500 rounded-md">
-                        <button type="submit" class="hover:bg-gray-500 rounded-md text-white block w-full text-left px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Log out</button>
-                    </form>
+                    <button  onclick="logout()" class="hover:bg-gray-500 rounded-md text-white block w-full text-left px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">Log out</button>
                 </div>
             </div>
         </div>
@@ -113,7 +111,7 @@ function displayReceiver(element) {
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
         </button>
-        <div class="flex items-center">
+        <div class="receiver-data flex items-center">
             <div class="w-10 h-10 mr-4 relative flex flex-shrink-0" >
                 <input type="hidden" id="topbar-rid" value="${receiverUID}">
                 <img id="topbar-img" class="rounded-lg w-full h-full object-cover"
@@ -143,6 +141,7 @@ socket.on("load-msgs", (messages, sender, receiver) => {
 });
 
 function displayMessage(message, self = true) {
+    console.log(message.sentAt);
     let child = null;
     if (self) {
         child = `

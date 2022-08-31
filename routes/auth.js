@@ -72,15 +72,10 @@ router.post("/login", async (req, res) => {
     return res.json({ name: user.name });
 });
 
-// logout end points
-router.get("/logout", token.isAuth, (req, res) => {
+// logout end point
+router.post("/logout", (req, res) => {
     token.deleteTokens(res);
-    res.redirect("/auth/login");
-});
-
-router.post("/logout", token.isAuth, (req, res) => {
-    token.deleteTokens(res);
-    res.redirect("/auth/login");
+    return res.json({ error: false });
 });
 
 module.exports = router;

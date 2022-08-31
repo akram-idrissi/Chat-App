@@ -3,7 +3,7 @@ var socket = io();
 // display info of connected user
 socket.on("user", (user) => {
     displayOnlineUser(user);
-    socket.emit("onlineUsers", user);
+    socket.emit("req-onlineUsers", user);
 });
 
 // display list of connected users
@@ -45,6 +45,12 @@ socket.on("to-receiver", (message) => {
         if so a message will be displayed in the message section 
         otherwise a notification will show up 
     */
+
+    let dataRef = $("#topbar-user").attr("data-ref");
+    if (dataRef && message.sender.socketID != dataRef) {
+        $("#topbar-user").attr("data-ref", message.sender.socketID);
+    }
+
     let senderNotif = $(`#${message.sender._id}`);
     let receiverID = $("#topbar-user").attr("data-ref");
 

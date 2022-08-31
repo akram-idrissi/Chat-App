@@ -47,7 +47,6 @@
     }
 
     function showProfile() {
-        console.log("hit");
         $.ajax({
             url: "profile",
             type: "get",
@@ -81,6 +80,30 @@
         $(".email-profile").val(user.email);
 
     }
+
+    function logout() {
+
+        $.ajax({
+            url: "logout",
+            type: "POST",
+            dataType: "json",
+            success: function (data, status, xhr) {
+                if (data.error) {
+                    console.log("error");
+                    return
+                }
+
+                socket.emit("logout")
+                window.location = "/login"
+            },
+            error: function (xhr, status, err) {
+                reset();
+            },
+        });
+
+    }
+
+
 </script>
 
 </body>

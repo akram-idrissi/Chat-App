@@ -11,7 +11,6 @@ const { getUser } = require("./lib/utils");
 const authRouter = require("./routes/auth");
 const Message = require("./models/message");
 const cookieParser = require("cookie-parser");
-const { verify } = require("jsonwebtoken");
 
 dotenv.config();
 const app = express();
@@ -65,6 +64,7 @@ var cacheOnlineUsers = new Map();
 /* logic */
 const io = new Server(server);
 io.on("connection", async (socket) => {
+    console.log(onlineUsers);
     /* sending online users to connected ones */
     const cookies = cookie.parse(socket.handshake.headers.cookie);
     let user = getUser(cookies, socket);
@@ -79,12 +79,12 @@ io.on("connection", async (socket) => {
     io.to(socket.id).emit("user", user);
 
     // sending online users to all connected clients
-    socket.on("onlineUsers", () => {
+    socket.on("req-onlineUsers", (user) => {
         io.emit("onlineUsers", onlineUsers);
     });
 
-    /* removing user fro online users on logout */
-    socket.on("disconnect", () => {
+    /* removing user from online users on logout */
+    socket.on("logout", () => {
         onlineUsers = onlineUsers.filter((u) => u.socketID != socket.id);
         io.emit("onlineUsers", onlineUsers);
     });
@@ -94,14 +94,13 @@ io.on("connection", async (socket) => {
         let message = "";
         let sender = onlineUsers.filter((u) => u.socketID == socket.id)[0];
         let receiver = onlineUsers.filter((u) => u.socketID == receiverID)[0];
-        io.to(receiverID).emit("to-receiver", message);
         message = new Message({
             sender: sender,
             receiver: receiver,
             text: text,
         });
-        message = await message.save();
         io.to(receiverID).emit("to-receiver", message);
+        message = await message.save();
     });
 
     // load msgs when clicking an online user
